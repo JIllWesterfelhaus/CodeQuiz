@@ -1,4 +1,4 @@
-
+//building array of questions
 $(document).ready(function () {
   var questions = [
     {
@@ -35,6 +35,7 @@ $(document).ready(function () {
       correctAnswer: 3
     }
   ]
+  //building countdown timer
   var timeRemaining = 120;
   function countdown() {
     timeRemaining--;
@@ -52,7 +53,7 @@ $(document).ready(function () {
     clearInterval(counter)
   }
   run()
-
+//building question form
   function questionForm(data) {
     var questionString = "<form>" + data.question + "<br>"
     var possibleAnswers = data.answers;
@@ -64,6 +65,7 @@ $(document).ready(function () {
   }
   window.formTemplate = questionForm
 
+//building questions
   function buildQuestions() {
     var questions2 = questions
     for (var i = 0; i < questions2.length; i++)  {
@@ -77,16 +79,10 @@ $(document).ready(function () {
   }
 buildQuestions()
 
+//building function to check for correct answers
 function checkAnswers()  {
-  
+
 }
-
-
-
-
-
-
-
 
 
 })
