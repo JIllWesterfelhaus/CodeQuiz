@@ -83,6 +83,4 @@ buildQuestions()
 function checkAnswers()  {
 
 }
-
-
 })
