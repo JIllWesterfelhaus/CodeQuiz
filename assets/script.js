@@ -53,7 +53,7 @@ $(document).ready(function () {
     clearInterval(counter)
   }
   run()
-//building question form
+  //building question form
   function questionForm(data) {
     var questionString = "<form>" + data.question + "<br>"
     var possibleAnswers = data.answers;
@@ -61,26 +61,62 @@ $(document).ready(function () {
       var possibleAnswer = possibleAnswers[i];
       questionString = questionString + "<input type = 'radio' name = " + data.id + " value = " + i + ">" + possibleAnswer
     }
-    return questionString + "</form><br>" 
+    return questionString + "</form><br>"
   }
   window.formTemplate = questionForm
 
-//building questions
+  //building questions
   function buildQuestions() {
     var questions2 = questions
-    for (var i = 0; i < questions2.length; i++)  {
-      questions2.splice(Math.floor(Math.random()* questions2.length),1)
+    for (var i = 0; 3 < questions2.length; i++) {
+      questions2.splice(Math.floor(Math.random() * questions2.length), 1)
     }
     var questionHTML = ""
-    for (var i = 0; i < questions2.length; i++)  {
+    for (var i = 0; i < questions2.length; i++) {
       questionHTML = questionHTML + questionForm(questions2[i])
     }
     $("#questions").append(questionHTML)
   }
-buildQuestions()
-
-//building function to check for correct answers
-function checkAnswers()  {
-
-}
+  function isCorrect(question) {
+    var answers = $("[name = " + question.id + "]")
+    var correct = answers.eq(question.correctAnswer)
+    var isChecked = correct.is(":checked")
+    return isChecked;
+  }
+  buildQuestions()
+  
+  //building function to check for correct answers
+  function checkAnswers() {
+    var correct = 0;
+    var incorrect = 0;
+    var unanswered = 0;
+    for (var i = 0; i < questions.length; i++) {
+      if (isCorrect(questions[i])) {
+        correct++
+      } else {
+        if (checkAnswered(questions[i])) {
+          incorrect++
+        } else {
+          unanswered++
+        }
+      }
+    }
+    $("#results").html("Correct" + correct + "Incorrect" + incorrect + "Unanswered" + unanswered)
+  }
+  function checkAnswered(question) {
+    var anyAnswered = false
+    var answers = $("[name = " + question.id + "]")
+    for (var i = 0; i <answers.length; i++)  {
+      if (answers[i].checked) {
+        anyAnswered = true
+        timeRemaining - 5
+      }
+    }
+    return anyAnswered;
+  }
+  $("#finish").on("click", function () {
+    checkAnswers()
+    stop()
+    alert("Game Over!")
+  })
 })
