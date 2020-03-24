@@ -35,40 +35,48 @@ $(document).ready(function () {
       correctAnswer: 3
     }
   ]
-  //building countdown timer
-  var timeRemaining = 120;
-  function countdown() {
-    timeRemaining--;
-    $("#timeRemain").text(timeRemaining + "Seconds Left");
-    if (timeRemaining === 0) {
-      stop()
-      alert("Time is up!")
-      checkAnswers()
-    }
+  var game = {
+    //building countdown timer
+    var timeRemaining = 120;
+    function countdown() {
+      timeRemaining--;
+  $("#timeRemain").text(timeRemaining + "Seconds Left");
+  if (timeRemaining === 0) {
+    stop()
+    alert("Time is up!")
+    checkAnswers()
   }
-  function run() {
+},
+run: function() {
     counter = setInterval(countdown, 1000)
-  }
-  function stop() {
+  },
+  stop: function() {
     clearInterval(counter)
-  }
-  run()
+  },
   //building question form
-  function questionForm(data) {
-    var questionString = "<form>" + data.question + "<br>"
-    var possibleAnswers = data.answers;
-    for (var i = 0; i < possibleAnswers.length; i++) {
-      var possibleAnswer = possibleAnswers[i];
-      questionString = questionString + "<input type = 'radio' name = " + data.id + " value = " + i + ">" + possibleAnswer
+  // function questionForm(data) {
+  //   var questionString = "<form>" + data.question + "<br>"
+  //   var possibleAnswers = data.answers;
+  //   for (var i = 0; i < possibleAnswers.length; i++) {
+  //     var possibleAnswer = possibleAnswers[i];
+  //     questionString = questionString + "<input type = 'radio' name = " + data.id + " value = " + i + ">" + possibleAnswer
+  //   }
+  //   return questionString + "</form><br>"
+  // }
+  // window.formTemplate = questionForm
+ questionForm:function(data) {
+    var card = $("#questions")
+    for (var i = 0; i < questions.length; i++) {
+      card.html("<h2>" + questions[i].question + "</h2>")
     }
-    return questionString + "</form><br>"
-  }
-  window.formTemplate = questionForm
-
+    for (var i = 0; i < questions.answers.length; i++) {
+      card.append("<button class = 'answer-button' id = 'button' data-name='" + questions.answers[i] + "'>" + questions.answers[i] + "</button>")
+    }
+  },
   //building questions
-  function buildQuestions() {
+  buildQuestions: function() {
     var questions2 = questions
-    for (var i = 0; 3 < questions2.length; i++) {
+    for (var i = 0; 1 < questions2.length; i++) {
       questions2.splice(Math.floor(Math.random() * questions2.length), 1)
     }
     var questionHTML = ""
@@ -76,17 +84,16 @@ $(document).ready(function () {
       questionHTML = questionHTML + questionForm(questions2[i])
     }
     $("#questions").append(questionHTML)
-  }
-  function isCorrect(question) {
+  },
+  isCorrect: function(question) {
     var answers = $("[name = " + question.id + "]")
     var correct = answers.eq(question.correctAnswer)
     var isChecked = correct.is(":checked")
     return isChecked;
-  }
-  buildQuestions()
-  
+  },
+
   //building function to check for correct answers
-  function checkAnswers() {
+  checkAnswers: function() {
     var correct = 0;
     var incorrect = 0;
     var unanswered = 0;
@@ -102,11 +109,11 @@ $(document).ready(function () {
       }
     }
     $("#results").html("Correct" + correct + "Incorrect" + incorrect + "Unanswered" + unanswered)
-  }
-  function checkAnswered(question) {
+  },
+  checkAnswered: function(question) {
     var anyAnswered = false
     var answers = $("[name = " + question.id + "]")
-    for (var i = 0; i <answers.length; i++)  {
+    for (var i = 0; i < answers.length; i++) {
       if (answers[i].checked) {
         anyAnswered = true
         timeRemaining - 5
@@ -114,6 +121,7 @@ $(document).ready(function () {
     }
     return anyAnswered;
   }
+}
   $("#finish").on("click", function () {
     checkAnswers()
     stop()
