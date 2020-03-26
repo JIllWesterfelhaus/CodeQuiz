@@ -1,5 +1,5 @@
 //building array of questions
-$(document).ready(function () {
+
   var questions = [
     {
       question: "What is 1 + 1?",
@@ -53,66 +53,31 @@ $(document).ready(function () {
         alert("Time is up!")
         this.checkAnswers()
       }
-    },
-    run: function () {
-      counter = setInterval(countdown, 1000)
-    },
-    stop: function () {
-      clearInterval(counter)
-    },
-    //building question form
-    // function questionForm(data) {
-    //   var questionString = "<form>" + data.question + "<br>"
-    //   var possibleAnswers = data.answers;
-    //   for (var i = 0; i < possibleAnswers.length; i++) {
-    //     var possibleAnswer = possibleAnswers[i];
-    //     questionString = questionString + "<input type = 'radio' name = " + data.id + " value = " + i + ">" + possibleAnswer
-    //   }
-    //   return questionString + "</form><br>"
-    // }
-    // window.formTemplate = questionForm
-    questionForm: function (data) {
+    }, 
+    questionForm: function () {
       
       card.html("<h2>" + questions[this.currentQuestion].question + "</h2>")
       for (var i = 0; i < questions[this.currentQuestion].answers.length; i++) {
         card.append("<button class = 'answer-button' id = 'button' data-name='" + questions[this.currentQuestion].answers[i] + "'>" + questions[this.currentQuestion].answers[i] + "</button>")
       }
     },
-    //building questions
-    //buildQuestions: function () {
-     // var questions2 = questions
-      //for (var i = 0; 1 < questions2.length; i++) {
-        //questions2.splice(Math.floor(Math.random() * questions2.length), 1)
-      //}
-      //var questionHTML = ""
-      //for (var i = 0; i < questions2.length; i++) {
-       // questionHTML = questionHTML + questionForm(questions2[i])
-      //}
-      //$("#questions").append(questionHTML)
-    //},
-    isCorrect: function (question) {
-      var answers = $("[name = " + question.id + "]")
-      var correct = answers.eq(question.correctAnswer)
-      var isChecked = correct.is(":checked")
-      return isChecked;
+    nextQuestion: function () {
+      this.currentQuestion ++
+      this.questionForm.bind(this)()
     },
-
-    //building function to check for correct answers
-    checkAnswers: function () {
-
-      for (var i = 0; i < questions.length; i++) {
-        if (isCorrect(questions[i])) {
-          correct++
-        } else {
-          if (checkAnswered(questions[i])) {
-            incorrect++
-          } else {
-            unanswered++
-          }
-        }
+    
+    stop: function () {
+      clearInterval(counter)
+      if (this.currentQuestion === questions.length - 1) {
+        setTimeout(this.results, 3 * 1000) 
       }
-      
+      else {
+        setTimeout(this.nextQuestion, 3 * 1000)
+      }
     },
+  
+
+    
     results: function () {
       clearInterval (window.timeRemaining)
       $("#timeRemain").text(this.timeRemaining)
@@ -127,9 +92,20 @@ $(document).ready(function () {
         this.answeredCorrectly()
       }
       else {this.answeredIncorrectly()
-
       }
     },
+    answeredCorrectly: function () {
+      this.correct++
+      clearInterval(window.timeRemaining)
+      card.html("<h2>Correct</h2>")
+      if (this.currentQuestion === questions.length - 1) {
+        setTimeout(this.results.bind(this), 3 * 1000) 
+      }
+      else {
+        setTimeout(this.nextQuestion.bind(this), 3 * 1000)
+      }
+    },
+
     answeredIncorrectly: function () {
       this.incorrect++
       window.timeRemaining - 10
@@ -143,12 +119,19 @@ $(document).ready(function () {
     },
 
     reset: function () {
-
+      this.currentQuestion = 0;
+      this.correct = 0;
+      this.incorrect = 0;
+      this.timeRemaining = timeRemaining;
+      this.questionForm();
     }
   }
-  $("#finish").on("click", function () {
-    checkAnswers()
-    stop()
-    alert("Game Over!")
+  $(document).on("click","#start-over",game.reset.bind(game))
+  $(document).on("click",".answer-button",function (e) {
+    game.clicked.bind(game,e)()
   })
-})
+  $(document).on("click","#start",function (){
+    game.questionForm.bind (game)()
+  })
+  
+
