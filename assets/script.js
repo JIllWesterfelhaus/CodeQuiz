@@ -1,5 +1,4 @@
 //building array of questions
-
   var questions = [
     {
       question: "What is 1 + 1?",
