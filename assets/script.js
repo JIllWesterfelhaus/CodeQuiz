@@ -23,15 +23,15 @@
       correctAnswer: "var i; for (i = 0; i < 1; i++)"
     },
     {
-      question: "What is 3 + 3?",
+      question: "What do you use to enclose an array?",
       answers: [
-        "3",
-        "4",
-        "5",
-        "6"
+        "Lesser and greater than signs",
+        "Parentheses",
+        "Curly braces",
+        "Square brackets"
       ],
       id: "question-3",
-      correctAnswer: "6"
+      correctAnswer: "Square brackets"
     }
   ];
   var card = $("#questions")
@@ -47,7 +47,7 @@
     //building countdown timer
     countdown: function () {
       this.timeRemaining--;
-      $("#timeRemain").text(this.timeRemaining + "Seconds Left");
+      $("#timeRemain").text(this.timeRemaining + " Seconds Left");
       if (this.timeRemaining === 0) {
         this.stop()
         alert("Time is up!")
@@ -75,15 +75,12 @@
         setTimeout(this.nextQuestion, 1000)
       }
     },
-  
-
-    
     results: function () {
       clearInterval (window.timer)
       $("#timeRemain").text(this.timeRemaining)
-      card.append("<h3>Correct Answers" + this.correct + "</h3>")
-      card.append("<h3>Incorrect Answers" + this.incorrect + "</h3>")
-      card.append("<h3>Unanswered" + (questions.length - (this.incorrect + this.correct)) + "</h3>")
+      card.append("<h3>Correct Answers:  " + this.correct + "</h3>")
+      card.append("<h3>Incorrect Answers:  " + this.incorrect + "</h3>")
+      card.append("<h3>Unanswered:  " + (questions.length - (this.incorrect + this.correct)) + "</h3>")
       card.append("<br><button id ='start-over'>Start Over?</button>")
     },
     clicked: function (e) {
