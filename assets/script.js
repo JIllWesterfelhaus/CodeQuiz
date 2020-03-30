@@ -1,26 +1,26 @@
 //building array of questions
   var questions = [
     {
-      question: "What is 1 + 1?",
+      question: "What does CSS stand for?",
       answers: [
-        "2",
-        "3",
-        "4",
-        "5"
+        "Cascading Style Sheet",
+        "Calendar Sort Section",
+        "Code Starting Solution",
+        "Cancel Script Service"
       ],
       id: "question-1",
-      correctAnswer: "2"
+      correctAnswer: "Cascading Style Sheet"
     },
     {
-      question: "What is 2 + 2?",
+      question: "What is the fomula for a for loop?",
       answers: [
-        "2",
-        "3",
-        "4",
-        "5"
+        "42",
+        "e=mc2",
+        "var i; for (i = 0; i < 1; i++)",
+        "(0°C × 9/5) + 32"
       ],
       id: "question-2",
-      correctAnswer: "4"
+      correctAnswer: "var i; for (i = 0; i < 1; i++)"
     },
     {
       question: "What is 3 + 3?",
