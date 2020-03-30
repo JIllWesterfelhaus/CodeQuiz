@@ -9,7 +9,7 @@
         "5"
       ],
       id: "question-1",
-      correctAnswer: 0
+      correctAnswer: "2"
     },
     {
       question: "What is 2 + 2?",
@@ -20,7 +20,7 @@
         "5"
       ],
       id: "question-2",
-      correctAnswer: 2
+      correctAnswer: "4"
     },
     {
       question: "What is 3 + 3?",
@@ -31,11 +31,12 @@
         "6"
       ],
       id: "question-3",
-      correctAnswer: 3
+      correctAnswer: "6"
     }
   ];
   var card = $("#questions")
   var timeRemaining = 120;
+  var timer
   //creating game object
   var game = {
     correct: 0,
@@ -54,7 +55,7 @@
       }
     }, 
     questionForm: function () {
-      
+      timer = setInterval(this.countdown.bind(this), 1000)
       card.html("<h2>" + questions[this.currentQuestion].question + "</h2>")
       for (var i = 0; i < questions[this.currentQuestion].answers.length; i++) {
         card.append("<button class = 'answer-button' id = 'button' data-name='" + questions[this.currentQuestion].answers[i] + "'>" + questions[this.currentQuestion].answers[i] + "</button>")
@@ -66,19 +67,19 @@
     },
     
     stop: function () {
-      clearInterval(counter)
+      clearInterval(window.timer)
       if (this.currentQuestion === questions.length - 1) {
-        setTimeout(this.results, 3 * 1000) 
+        setTimeout(this.results, 1000) 
       }
       else {
-        setTimeout(this.nextQuestion, 3 * 1000)
+        setTimeout(this.nextQuestion, 1000)
       }
     },
   
 
     
     results: function () {
-      clearInterval (window.timeRemaining)
+      clearInterval (window.timer)
       $("#timeRemain").text(this.timeRemaining)
       card.append("<h3>Correct Answers" + this.correct + "</h3>")
       card.append("<h3>Incorrect Answers" + this.incorrect + "</h3>")
@@ -86,34 +87,36 @@
       card.append("<br><button id ='start-over'>Start Over?</button>")
     },
     clicked: function (e) {
-      clearInterval(window.timeRemaining)
+      clearInterval(window.timer)
       if ($(e.target).attr("data-name") === questions[this.currentQuestion].correctAnswer) {
         this.answeredCorrectly()
       }
       else {this.answeredIncorrectly()
       }
+      console.log(questions[this.currentQuestion].correctAnswer)
     },
     answeredCorrectly: function () {
       this.correct++
-      clearInterval(window.timeRemaining)
+      clearInterval(window.timer)
       card.html("<h2>Correct</h2>")
       if (this.currentQuestion === questions.length - 1) {
-        setTimeout(this.results.bind(this), 3 * 1000) 
+        setTimeout(this.results.bind(this), 1000) 
       }
       else {
-        setTimeout(this.nextQuestion.bind(this), 3 * 1000)
+        setTimeout(this.nextQuestion.bind(this), 1000)
       }
     },
 
     answeredIncorrectly: function () {
       this.incorrect++
-      window.timeRemaining - 10
+      clearInterval(window.timer)
+      timer - 10;
       card.html("<h2>Incorrect</h2>")
       if (this.currentQuestion === questions.length - 1) {
-        setTimeout(this.results.bind(this), 3 * 1000)
+        setTimeout(this.results.bind(this), 1000)
       }
       else {
-        setTimeout(this.nextQuestion.bind(this), 3 * 1000)
+        setTimeout(this.nextQuestion.bind(this), 1000)
       }
     },
 
